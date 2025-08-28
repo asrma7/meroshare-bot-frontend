@@ -64,6 +64,14 @@ export default function Register() {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      first_name: "",
+      last_name: "",
+      username: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+    },
   });
 
   useEffect(() => {

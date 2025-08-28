@@ -55,6 +55,10 @@ export default function Login() {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      identifier: "",
+      password: "",
+    },
   });
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
