@@ -1,70 +1,159 @@
 "use client";
 
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useLoginHandler } from "@/hooks/useAuthHandler";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { useAuth } from "@/contexts/authContext";
+import { useRouter } from "next/navigation";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import Link from "next/link";
+import Loading from "@/components/ui/loading";
+
+const FormSchema = z.object({
+  identifier: z.string().min(2, {
+    message: "Invalid Username or Email",
+  }),
+  password: z.string().min(6, {
+    message: "Password must be at least 6 characters long",
+  }),
+});
 
 export default function Login() {
-  const [showPassword, setShowPassword] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const router = useRouter();
+  const { token } = useAuth();
+
+  useEffect(() => {
+    if (token) {
+      router.push("/dashboard");
+      return;
+    }
+    setMounted(true);
+  }, [token, router]);
+
+  const { handleLoginSubmit, error, isLoggingIn } = useLoginHandler();
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  });
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name && form.formState.errors[name]) {
+        form.clearErrors([name]);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
+
+  useEffect(() => {
+    if (error) {
+      form.setError("root", {
+        type: "manual",
+        message: error,
+      });
+    }
+  }, [error, form]);
+
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const success = await handleLoginSubmit(data);
+
+    if (success) {
+      toast.success("Login successful!");
+      form.reset();
+    } else {
+      toast.error("Login failed. Please try again.");
+    }
+  }
+
+  if (!mounted) {
+    return <Loading />;
+  }
 
   return (
     <main className="flex min-h-screen items-center justify-center p-8 bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-center text-gray-800">Login</h1>
-        <form className="mt-6 space-y-4">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email Address
-            </label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="Enter your email"
-              className="mt-1 w-full"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <div className="relative">
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                className="mt-1 w-full pr-10"
-              />
-              <div
-                className="absolute inset-y-0 right-2 flex items-center cursor-pointer"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-gray-500" />
-                ) : (
-                  <Eye className="h-5 w-5 text-gray-500" />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <Card className="min-w-[400px] max-w-md p-6 shadow-lg">
+            <CardHeader>
+              <CardTitle>Login</CardTitle>
+              <CardDescription>Enter your credentials</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {/* Display form-level errors */}
+              {form.formState.errors.root && (
+                <div className="mb-4 p-3 text-sm bg-red-100 border border-red-200 text-red-800 rounded">
+                  {form.formState.errors.root.message}
+                </div>
+              )}
+
+              <FormField
+                control={form.control}
+                name="identifier"
+                render={({ field }) => (
+                  <FormItem className="my-4">
+                    <FormLabel>Username/Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Username/email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-            </div>
-          </div>
-          <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
-            Login
-          </Button>
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className="my-4">
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" disabled={isLoggingIn}>
+                {isLoggingIn ? "Logging in..." : "Login"}
+              </Button>
+            </CardContent>
+            <CardFooter className="flex justify-center items-center">
+              <p className="mt-4 text-center text-sm text-gray-600">
+                Don&apos;t have an account?{" "}
+                <Link
+                  href="/register"
+                  className="text-blue-500 hover:underline"
+                >
+                  Register here
+                </Link>
+              </p>
+            </CardFooter>
+          </Card>
         </form>
-        <p className="mt-4 text-center text-sm text-gray-600">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="text-blue-500 hover:underline">
-            Register here
-          </Link>
-        </p>
-      </div>
+      </Form>
     </main>
   );
 }
