@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     typeof window !== "undefined" ? localStorage.getItem("token") : null
   );
   const [refreshToken, setRefreshToken] = useState<string | null>(
-    typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null
+    typeof window !== "undefined" ? localStorage.getItem("refresh_token") : null
   );
 
   const latestAccessTokenRef = useRef<string | null>(token);

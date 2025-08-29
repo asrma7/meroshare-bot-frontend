@@ -80,8 +80,8 @@ export const useAxiosAuthInterceptor = ({
 
           try {
             const res = await axios.post(
-              `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/refresh-token`,
-              { token: refreshToken }
+              `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080"}/api/v1/refresh`,
+              { refresh_token: refreshToken }
             );
 
             const newAccessToken = res.data.access_token;
