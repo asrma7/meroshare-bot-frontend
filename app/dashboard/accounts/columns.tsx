@@ -4,7 +4,7 @@ import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Account } from "@/api/account";
+import { Account } from "@/types/account";
 
 export const getColumns = (): ColumnDef<Account>[] => [
     {
@@ -15,7 +15,7 @@ export const getColumns = (): ColumnDef<Account>[] => [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    User ID
+                    ID
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
@@ -32,37 +32,37 @@ export const getColumns = (): ColumnDef<Account>[] => [
         },
     },
     {
-        accessorKey: "FirstName",
+        accessorKey: "Name",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    First Name
+                    FullName
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
         cell: ({ row }) => {
-            return row.getValue("FirstName");
+            return row.getValue("Name");
         },
     },
     {
-        accessorKey: "LastName",
+        accessorKey: "ClientID",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Last Name
+                    Client ID
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
         cell: ({ row }) => {
-            return row.getValue("LastName");
+            return row.getValue("ClientID");
         },
     },
     {
@@ -83,61 +83,71 @@ export const getColumns = (): ColumnDef<Account>[] => [
         },
     },
     {
-        accessorKey: "Email",
+        accessorKey: "CRNNumber",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Email
+                    CRN
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
         cell: ({ row }) => {
-            return row.getValue("Email");
+            return row.getValue("CRNNumber");
         },
     },
     {
-        accessorKey: "LoggedInDevice",
+        accessorKey: "PreferredKitta",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Logged In Device
+                    Kitta
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
         cell: ({ row }) => {
-            return row.getValue("LoggedInDevice");
+            return row.getValue("PreferredKitta");
         },
     },
     {
-        accessorKey: "ActiveTicketID",
+        accessorKey: "Demat",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Active Ticket ID
+                    Demat
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
         cell: ({ row }) => {
-            const activeTicketId: string = row.getValue("ActiveTicketID");
-            return activeTicketId && activeTicketId !== '00000000-0000-0000-0000-000000000000' ? (
-                <Link href={`/dashboard/tickets/${activeTicketId}`} className="hover:underline">
-                    {`${activeTicketId.substring(0, 8)}...`}
-                </Link>
-            ) : (
-                "None"
+            return row.getValue("Demat");
+        },
+    },
+    {
+        accessorKey: "BOID",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    BOID
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
             );
+        },
+        cell: ({ row }) => {
+            return row.getValue("BOID");
         },
     },
     {
@@ -163,25 +173,20 @@ export const getColumns = (): ColumnDef<Account>[] => [
         },
     },
     {
-        accessorKey: "UpdatedAt",
+        accessorKey: "Status",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Updated At
+                    Status
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
         cell: ({ row }) => {
-            const updatedAt: string = row.getValue("UpdatedAt");
-            return new Date(updatedAt).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-            });
+            return (row.getValue("Status") as string).toUpperCase();
         },
-    },
+    }
 ]

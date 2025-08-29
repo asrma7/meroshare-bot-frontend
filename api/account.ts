@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import axiosClient from "./axiosClient";
 import { useAuth } from "@/contexts/authContext";
-import { CreateAccountFormValues } from "@/types/account";
+import { AccountFormValues } from "@/types/account";
 
 const API_VERSION = "api/v1";
 
@@ -17,6 +17,16 @@ export const useAccountApi = () => {
         [token]
     );
 
+    const getAccountById = useCallback(
+        async (id: string) => {
+            const response = await axiosClient.get(`/${API_VERSION}/accounts/${id}`, {
+                ...getAuthHeaders(),
+            });
+            return response.data;
+        },
+        [getAuthHeaders]
+    );
+
     const getAccounts = useCallback(
         async () => {
             const response = await axiosClient.get(`/${API_VERSION}/accounts`, {
@@ -29,7 +39,7 @@ export const useAccountApi = () => {
 
     const createAccount = useCallback(
 
-        async (data: CreateAccountFormValues) => {
+        async (data: AccountFormValues) => {
             const payload = {
                 ...data,
                 bank_id: data.bank_id ? String(data.bank_id) : null,
@@ -42,8 +52,35 @@ export const useAccountApi = () => {
         [getAuthHeaders]
     );
 
+    const updateAccount = useCallback(
+        async (id: string, data: AccountFormValues) => {
+            const payload = {
+                ...data,
+                bank_id: data.bank_id ? String(data.bank_id) : null,
+            };
+            const response = await axiosClient.put(`/${API_VERSION}/accounts/${id}`, payload, {
+                ...getAuthHeaders(),
+            });
+            return response.data;
+        },
+        [getAuthHeaders]
+    );
+
+    const deleteAccount = useCallback(
+        async (id: string) => {
+            const response = await axiosClient.delete(`/${API_VERSION}/accounts/${id}`, {
+                ...getAuthHeaders(),
+            });
+            return response.data;
+        },
+        [getAuthHeaders]
+    );
+
     return {
+        getAccountById,
         getAccounts,
         createAccount,
+        updateAccount,
+        deleteAccount
     };
 }

@@ -25,29 +25,31 @@ import {
 import useCapitalOptionsHandler from '@/hooks/useCapitalOptionsHandler'
 import Loading from '../ui/loading'
 import { ChevronsUpDown } from 'lucide-react'
-import { CreateAccountFormValues } from '@/types/account'
+import { AccountFormValues } from '@/types/account'
 
 type Props = {
-    onSubmit: (values: CreateAccountFormValues) => Promise<void>
+    onSubmit: (values: AccountFormValues) => Promise<void>
+    initialValues?: AccountFormValues
     isLoading: boolean
 }
 
 export default function AccountForm({
     onSubmit,
+    initialValues,
     isLoading,
 }: Props) {
 
-    const [clientId, setClientId] = useState<string | null>(null)
+    const [clientId, setClientId] = useState<string | null>(initialValues?.client_id || null)
     const [clientIdOpen, setClientIdOpen] = React.useState(false)
     const [userBankOptions, setUserBankOptions] = useState<{ value: number; label: string }[]>([])
-    const [bankId, setBankId] = useState<number | null>(null)
+    const [bankId, setBankId] = useState<number | null>(initialValues?.bank_id || null)
     const [bankOpen, setBankOpen] = React.useState(false)
-    const [username, setUsername] = useState<string>('')
+    const [username, setUsername] = useState<string>(initialValues?.username || '')
     const [password, setPassword] = useState<string>('')
     const [isDetailsVisible, setIsDetailsVisible] = useState<boolean>(false)
-    const [crnNumber, setCrnNumber] = useState<string>('')
+    const [crnNumber, setCrnNumber] = useState<string>(initialValues?.crn_number || '')
     const [transactionPIN, setTransactionPIN] = useState<string>('')
-    const [preferredKitta, setPreferredKitta] = useState<number>(10)
+    const [preferredKitta, setPreferredKitta] = useState<number>(initialValues?.preferred_kitta || 10)
     const [error, setError] = useState<string | null>(null)
     const [isProcessing, setIsProcessing] = useState<boolean>(false)
 
@@ -259,7 +261,7 @@ export default function AccountForm({
 
                 <CardFooter className="flex justify-end">
                     <Button type="submit" disabled={isLoading || isProcessing} className='cursor-pointer'>
-                        {isDetailsVisible ? 'Add Account' : 'Continue'}
+                        {isDetailsVisible ? initialValues ? 'Update Account' : 'Add Account' : 'Continue'}
                     </Button>
                 </CardFooter>
             </Card>

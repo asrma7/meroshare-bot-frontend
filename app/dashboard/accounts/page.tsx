@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { getColumns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
-import { Account, useAccountApi } from "@/api/account";
+import { useAccountApi } from "@/api/account";
 import Loading from "@/components/ui/loading";
+import { Account } from "@/types/account";
 
 interface AccountsResponse {
     status: string;
