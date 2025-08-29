@@ -13,10 +13,13 @@ import { Account } from "@/types/account";
 import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { RefreshCcw, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 
 export default function AccountDetailPage() {
-    const { getAccountById } = useAccountApi();
+    const { getAccountById, deleteAccount } = useAccountApi();
     const { id } = useParams();
     const [account, setAccount] = React.useState<Account | null>(null);
     const [error, setError] = React.useState<string | null>(null);
@@ -40,15 +43,23 @@ export default function AccountDetailPage() {
     }, [id, getAccountById]);
 
     const handleUpdate = () => {
-        // Navigate to update page (assumes /dashboard/accounts/[id]/edit exists)
         router.push(`/dashboard/accounts/${id}/edit`);
     };
 
     const handleDelete = async () => {
         setDeleting(true);
-        // TODO: Implement delete API call here
-        alert("Delete functionality not implemented yet.");
-        setDeleting(false);
+        try {
+            const response = await deleteAccount(id!.toString());
+            if (response.status === "success") {
+                router.push("/dashboard/accounts");
+            } else {
+                toast.error("Failed to delete account.");
+            }
+        } catch (error) {
+            toast.error("Failed to delete account.");
+        } finally {
+            setDeleting(false);
+        }
     };
 
     if (error) {
@@ -65,7 +76,9 @@ export default function AccountDetailPage() {
     if (!account) {
         return (
             <div className="max-w-2xl mx-auto py-10">
-                <h1>Loading Account...</h1>
+                <Skeleton className="h-6 w-1/2" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
             </div>
         );
     }
@@ -83,9 +96,32 @@ export default function AccountDetailPage() {
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" onClick={handleUpdate}>Update</Button>
-                        <Button variant="destructive" onClick={handleDelete} disabled={deleting}>
-                            {deleting ? "Deleting..." : "Delete"}
-                        </Button>
+
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button variant="destructive" disabled={deleting}>
+                                    {deleting ? "Deleting..." : "Delete"}
+                                </Button>
+                            </AlertDialogTrigger>
+
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. This will permanently delete
+                                        the account from the server.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction
+                                        onClick={() => handleDelete()}
+                                    >
+                                        Continue
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </div>
                 </CardHeader>
                 <Separator className="my-2" />
@@ -112,7 +148,7 @@ export default function AccountDetailPage() {
                     </div>
                 </CardContent>
             </Card>
-        </div>
+        </div >
     );
 }
 
