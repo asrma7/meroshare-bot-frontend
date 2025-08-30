@@ -41,8 +41,8 @@ export default function AccountForm({
 
     const [clientId, setClientId] = useState<string | null>(initialValues?.client_id || null)
     const [clientIdOpen, setClientIdOpen] = React.useState(false)
-    const [userBankOptions, setUserBankOptions] = useState<{ value: number; label: string }[]>([])
-    const [bankId, setBankId] = useState<number | null>(initialValues?.bank_id || null)
+    const [userBankOptions, setUserBankOptions] = useState<{ value: string; label: string }[]>([])
+    const [bankId, setBankId] = useState<string | null>(initialValues?.bank_id || null)
     const [bankOpen, setBankOpen] = React.useState(false)
     const [username, setUsername] = useState<string>(initialValues?.username || '')
     const [password, setPassword] = useState<string>('')
@@ -110,7 +110,7 @@ export default function AccountForm({
                     let userBanks = await bankResponse.json()
                     setUserBankOptions(userBanks.map((bank: { id: number; name: string }) => ({
                         label: bank.name,
-                        value: bank.id
+                        value: bank.id.toString()
                     })))
                     setIsDetailsVisible(true)
                     setIsProcessing(false)

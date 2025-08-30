@@ -2,7 +2,7 @@ export interface AccountFormValues {
     client_id: string | null
     username: string
     password: string
-    bank_id: number | null
+    bank_id: string | null
     crn_number: string
     transaction_pin: string
     preferred_kitta: number
@@ -15,7 +15,7 @@ export interface Account {
     Contact: string;
     ClientID: string | null;
     Username: string;
-    BankID: number | null;
+    BankID: string | null;
     CRNNumber: string;
     AccountTypeId: number | null;
     PreferredKitta: number;

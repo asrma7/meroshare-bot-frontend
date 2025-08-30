@@ -144,7 +144,7 @@ export default function AccountDetailPage() {
                         <Detail label="Password Expiry Date" value={formatDate(account.PasswordExpiryDate)} />
                         <Detail label="Created At" value={formatDate(account.CreatedAt)} />
                         <Detail label="Updated At" value={formatDate(account.UpdatedAt)} />
-                        <Detail label="Status" value={account.Status} />
+                        <Detail label="Status" value={account.Status?.toUpperCase()} />
                     </div>
                 </CardContent>
             </Card>
