@@ -43,6 +43,7 @@ export const useAccountApi = () => {
             const payload = {
                 ...data,
                 bank_id: data.bank_id ? String(data.bank_id) : null,
+                preferred_kitta: data.preferred_kitta ? Number(data.preferred_kitta) : null,
             };
             const response = await axiosClient.post(`/${API_VERSION}/accounts`, payload, {
                 ...getAuthHeaders(),
@@ -57,6 +58,7 @@ export const useAccountApi = () => {
             const payload = {
                 ...data,
                 bank_id: data.bank_id ? String(data.bank_id) : null,
+                preferred_kitta: data.preferred_kitta ? Number(data.preferred_kitta) : null,
             };
             const response = await axiosClient.put(`/${API_VERSION}/accounts/${id}`, payload, {
                 ...getAuthHeaders(),

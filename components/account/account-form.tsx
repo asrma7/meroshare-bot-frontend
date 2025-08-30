@@ -135,6 +135,11 @@ export default function AccountForm({
                 setIsProcessing(false)
                 return
             }
+            if (isNaN(Number(transactionPIN))) {
+                setError('Transaction PIN must be a number.')
+                setIsProcessing(false)
+                return
+            }
             if (preferredKitta < 10) {
                 setError('Preferred Kitta must be at least 10.')
                 setIsProcessing(false)
