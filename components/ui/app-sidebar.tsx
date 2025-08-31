@@ -1,4 +1,4 @@
-import { CircleDollarSign, Home, User, Plus, Eye, ChevronRight, DollarSign } from "lucide-react"
+import { CircleDollarSign, Home, User, Plus, Eye, ChevronRight, DollarSign, ShieldAlert, Warehouse } from "lucide-react"
 
 import {
     Sidebar,
@@ -44,7 +44,19 @@ const items = [
     {
         title: "Shares",
         icon: CircleDollarSign,
-        url: "/dashboard/shares",
+        collapsible: true,
+        subItems: [
+            {
+                title: "Applied Share",
+                url: "/dashboard/shares",
+                icon: Warehouse,
+            },
+            {
+                title: "Share Apply Errors",
+                url: "/dashboard/errors",
+                icon: ShieldAlert
+            },
+        ],
     },
 ];
 

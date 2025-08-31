@@ -4,7 +4,7 @@ import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Share } from "@/api/share";
+import { Share } from "@/types/share";
 
 export const getColumns = (): ColumnDef<Share>[] => [
     {
@@ -15,129 +15,162 @@ export const getColumns = (): ColumnDef<Share>[] => [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    User ID
+                    ID
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
         cell: ({ row }) => {
-            const userId: string = row.getValue("ID");
-            const displayId = `${userId.substring(0, 8)}...`;
+            const shareId: string = row.getValue("ID");
+            const displayId = `${shareId.substring(0, 8)}...`;
 
             return (
-                <Link href={`/dashboard/shares/${userId}`} className="hover:underline">
+                <Link href={`/dashboard/shares/${shareId}`} className="hover:underline">
                     {displayId}
                 </Link>
             );
         },
     },
     {
-        accessorKey: "FirstName",
+        accessorKey: "AccountID",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    First Name
+                    Account ID
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
         cell: ({ row }) => {
-            return row.getValue("FirstName");
-        },
-    },
-    {
-        accessorKey: "LastName",
-        header: ({ column }) => {
+            const accountId: string = row.getValue("AccountID");
+            const displayId = `${accountId.substring(0, 8)}...`;
             return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Last Name
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => {
-            return row.getValue("LastName");
-        },
-    },
-    {
-        accessorKey: "Username",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Username
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => {
-            return row.getValue("Username");
-        },
-    },
-    {
-        accessorKey: "Email",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Email
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => {
-            return row.getValue("Email");
-        },
-    },
-    {
-        accessorKey: "LoggedInDevice",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Logged In Device
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => {
-            return row.getValue("LoggedInDevice");
-        },
-    },
-    {
-        accessorKey: "ActiveTicketID",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Active Ticket ID
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => {
-            const activeTicketId: string = row.getValue("ActiveTicketID");
-            return activeTicketId && activeTicketId !== '00000000-0000-0000-0000-000000000000' ? (
-                <Link href={`/dashboard/tickets/${activeTicketId}`} className="hover:underline">
-                    {`${activeTicketId.substring(0, 8)}...`}
+                <Link href={`/dashboard/accounts/${accountId}`} className="hover:underline">
+                    {displayId}
                 </Link>
-            ) : (
-                "None"
             );
+        },
+    },
+    {
+        accessorKey: "CompanyName",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Company Name
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        cell: ({ row }) => {
+            return row.getValue("CompanyName");
+        },
+    },
+    {
+        accessorKey: "Scrip",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Scrip
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        cell: ({ row }) => {
+            return row.getValue("Scrip");
+        },
+    },
+    {
+        accessorKey: "AppliedKitta",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Kitta
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        cell: ({ row }) => {
+            return row.getValue("AppliedKitta");
+        },
+    },
+    {
+        "accessorKey": "ShareGroupName",
+        "header": ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Group
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        "cell": ({ row }) => {
+            return row.getValue("ShareGroupName");
+        },
+    },
+    {
+        accessorKey: "ShareTypeName",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Type
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        cell: ({ row }) => {
+            return row.getValue("ShareTypeName");
+        },
+    },
+    {
+        accessorKey: "SubGroup",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Sub Group
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        cell: ({ row }) => {
+            return row.getValue("SubGroup");
+        },
+    },
+    {
+        accessorKey: "Status",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Status
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        cell: ({ row }) => {
+            return (row.getValue("Status") as string).toUpperCase();
         },
     },
     {
@@ -148,7 +181,7 @@ export const getColumns = (): ColumnDef<Share>[] => [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Created At
+                    Applied At
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
@@ -156,28 +189,6 @@ export const getColumns = (): ColumnDef<Share>[] => [
         cell: ({ row }) => {
             const createdAt: string = row.getValue("CreatedAt");
             return new Date(createdAt).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-            });
-        },
-    },
-    {
-        accessorKey: "UpdatedAt",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Updated At
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => {
-            const updatedAt: string = row.getValue("UpdatedAt");
-            return new Date(updatedAt).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "2-digit",
                 day: "2-digit",

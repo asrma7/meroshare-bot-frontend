@@ -5,27 +5,27 @@ import { getColumns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { useShareApi } from "@/api/share";
 import Loading from "@/components/ui/loading";
-import { Share } from "@/types/share";
+import { ShareError } from "@/types/share";
 
 interface SharesResponse {
     status: string;
-    applied_shares: Share[];
+    applied_share_errors: ShareError[];
 }
 
-export default function SharesPage() {
-    const [shares, setShares] = useState<Share[]>([]);
+export default function ShareErrorsPage() {
+    const [errors, setErrors] = useState<ShareError[]>([]);
     const [loading, setLoading] = useState(true);
     const [isMounted, setIsMounted] = useState(false);
 
-    const { getShares } = useShareApi();
+    const { getShareErrors } = useShareApi();
 
     useEffect(() => {
         setIsMounted(true);
 
-        const fetchShares = async () => {
+        const fetchShareErrors = async () => {
             try {
-                const response: SharesResponse = await getShares();
-                setShares(response.applied_shares);
+                const response: SharesResponse = await getShareErrors();
+                setErrors(response.applied_share_errors);
             } catch (error) {
                 console.error("Failed to fetch Shares:", error);
             } finally {
@@ -33,20 +33,19 @@ export default function SharesPage() {
             }
         };
 
-        fetchShares();
-    }, [getShares]);
+        fetchShareErrors();
+    }, [getShareErrors]);
 
     if (!isMounted) return null;
 
-    if (loading) return
-    <Loading />;
+    if (loading) return <Loading />;
 
     const columns = getColumns();
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-7xl">
-            <h1 className="text-2xl font-bold mb-6">Applied Shares</h1>
-            <DataTable columns={columns} data={shares ?? []} />
+            <h1 className="text-2xl font-bold mb-6">Share Apply Errors</h1>
+            <DataTable columns={columns} data={errors ?? []} />
         </div>
     );
 }

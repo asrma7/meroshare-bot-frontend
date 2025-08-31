@@ -2,14 +2,7 @@ import { useCallback } from "react";
 import axiosClient from "./axiosClient";
 import { useAuth } from "@/contexts/authContext";
 
-export interface Share {
-    ID: string;
-    FirstName: string;
-    LastName: string;
-    Email: string;
-    CreatedAt: string;
-    UpdatedAt: string;
-}
+const API_VERSION = "api/v1";
 
 export const useShareApi = () => {
     const { token } = useAuth();
@@ -21,14 +14,39 @@ export const useShareApi = () => {
         [token]
     );
 
-    const getShares = async () => {
-        const response = await axiosClient.get("/shares", {
-            headers: getAuthHeaders(),
-        });
-        return response.data;
-    };
+    const getShares = useCallback(
+        async () => {
+            const response = await axiosClient.get(`/${API_VERSION}/shares/applied`, {
+                headers: getAuthHeaders(),
+            });
+            return response.data;
+        },
+        [getAuthHeaders]
+    );
+
+    const getShareErrors = useCallback(
+        async () => {
+            const response = await axiosClient.get(`/${API_VERSION}/shares/errors`, {
+                headers: getAuthHeaders(),
+            });
+            return response.data;
+        },
+        [getAuthHeaders]
+    );
+
+    const getShareById = useCallback(
+        async (id: string) => {
+            const response = await axiosClient.get(`/${API_VERSION}/shares/${id}`, {
+                headers: getAuthHeaders(),
+            });
+            return response.data;
+        },
+        [getAuthHeaders]
+    );
 
     return {
         getShares,
+        getShareErrors,
+        getShareById,
     };
 }
