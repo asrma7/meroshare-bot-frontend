@@ -87,10 +87,8 @@ export const useAxiosAuthInterceptor = ({
             const newAccessToken = res.data.access_token;
             const newRefreshToken = res.data.refresh_token;
 
-            // Set tokens in context and storage
             setAuthTokens(newAccessToken, newRefreshToken);
 
-            // Retry original request directly using fresh token (not relying on ref/context)
             originalRequest.headers = {
               ...originalRequest.headers,
               Authorization: `Bearer ${newAccessToken}`,
