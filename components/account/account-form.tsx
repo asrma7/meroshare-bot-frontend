@@ -75,7 +75,7 @@ export default function AccountForm({
                 setIsProcessing(false)
                 return
             }
-            let response = await fetch('https://webbackend.cdsc.com.np/api/meroShare/auth/', {
+            const response = await fetch('https://webbackend.cdsc.com.np/api/meroShare/auth/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -102,12 +102,12 @@ export default function AccountForm({
             } else {
                 const authHeader = response.headers.get("Authorization");
                 if (authHeader) {
-                    let bankResponse = await fetch('https://webbackend.cdsc.com.np/api/meroShare/bank/', {
+                    const bankResponse = await fetch('https://webbackend.cdsc.com.np/api/meroShare/bank/', {
                         headers: {
                             'Authorization': authHeader
                         }
                     })
-                    let userBanks = await bankResponse.json()
+                    const userBanks = await bankResponse.json()
                     setUserBankOptions(userBanks.map((bank: { id: number; name: string }) => ({
                         label: bank.name,
                         value: bank.id.toString()

@@ -14,7 +14,6 @@ import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { RefreshCcw, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 
@@ -35,7 +34,8 @@ export default function AccountDetailPage() {
                 } else {
                     setAccount(response.account);
                 }
-            } catch (error) {
+            } catch (err) {
+                console.error('Error fetching account:', err);
                 setError("Failed to load account.");
             }
         };
@@ -55,7 +55,8 @@ export default function AccountDetailPage() {
             } else {
                 toast.error("Failed to delete account.");
             }
-        } catch (error) {
+        } catch (err) {
+            console.error('Error deleting account:', err);
             toast.error("Failed to delete account.");
         } finally {
             setDeleting(false);
@@ -152,7 +153,7 @@ export default function AccountDetailPage() {
     );
 }
 
-function Detail({ label, value }: { label: string; value: any }) {
+function Detail({ label, value }: { label: string; value: string | number | undefined | null }) {
     return (
         <div className="flex flex-col gap-1">
             <Label className="text-muted-foreground">{label}</Label>

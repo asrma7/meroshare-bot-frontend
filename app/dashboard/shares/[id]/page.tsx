@@ -9,7 +9,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useShareApi } from "@/api/share";
 import { formatDate } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 import { Share, ShareError } from "@/types/share";
 import Link from "next/link";
 
@@ -20,7 +19,6 @@ export default function ShareDetailPage() {
     const [share, setShare] = React.useState<Share | null>(null);
     const [shareError, setShareError] = React.useState<ShareError | null>(null);
     const [error, setError] = React.useState<string | null>(null);
-    const router = useRouter();
     React.useEffect(() => {
         const fetchShare = async () => {
             try {
@@ -31,7 +29,8 @@ export default function ShareDetailPage() {
                     setShare(response.applied_share);
                     setShareError(response.applied_share_error);
                 }
-            } catch (error) {
+            } catch (err) {
+                console.error('Error fetching share:', err);
                 setError("Failed to load share.");
             }
         };
@@ -96,7 +95,7 @@ export default function ShareDetailPage() {
     );
 }
 
-function Detail({ label, value }: { label: string; value: any }) {
+function Detail({ label, value }: { label: string; value: string | number | undefined | null }) {
     return (
         <div className="flex flex-col gap-1">
             <Label className="text-muted-foreground">{label}</Label>

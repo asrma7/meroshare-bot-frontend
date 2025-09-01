@@ -63,8 +63,8 @@ const DashboardLayout: FunctionComponent<LayoutProps> = ({ children }) => {
                 const profile = await getProfile();
                 const name = [profile.first_name, profile.last_name].filter(Boolean).join(" ");
                 setUserName(name);
-            } catch (e) {
-                // fallback or logout if needed
+            } catch (err) {
+                console.error('Error fetching profile:', err);
                 setUserName("");
             }
         };

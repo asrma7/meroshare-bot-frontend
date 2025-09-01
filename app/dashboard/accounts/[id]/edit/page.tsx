@@ -14,7 +14,6 @@ export default function CreateAccountPage() {
     const router = useRouter()
     const [isLoading, setIsLoading] = React.useState(false)
     const [account, setAccount] = React.useState<Account | null>(null)
-    const [error, setError] = React.useState<string | null>(null)
 
     useEffect(() => {
         const fetchAccount = async () => {
@@ -32,7 +31,7 @@ export default function CreateAccountPage() {
     const handleSubmit = async (values: AccountFormValues) => {
         try {
             setIsLoading(true)
-            let resp = await updateAccount(id!.toString(), values)
+            const resp = await updateAccount(id!.toString(), values)
             if (resp.status === 'success') {
                 toast.success(resp.message || 'Account updated successfully.')
                 router.push('/dashboard/accounts')
@@ -40,6 +39,7 @@ export default function CreateAccountPage() {
                 toast.error(resp.message || 'Something went wrong.')
             }
         } catch (err) {
+            console.error('Error updating account:', err)
             toast.error('Something went wrong.')
         } finally {
             setIsLoading(false)
@@ -47,7 +47,6 @@ export default function CreateAccountPage() {
     }
 
     if (!account) return <Loading />;
-    if (error) return <div className="text-red-500">{error}</div>;
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-4xl space-y-4">
