@@ -116,7 +116,17 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.password-mask {
+  -webkit-text-security: disc;
+  /* Chrome, Safari */
+  text-security: disc;
+  /* Old IE */
+  -moz-appearance: textfield;
+  /* Helps Firefox */
 }

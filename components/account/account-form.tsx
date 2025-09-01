@@ -205,15 +205,15 @@ export default function AccountForm({
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor='crnNumber'>CRN Number</Label>
-                                <Input id='crnNumber' name='crn' value={crnNumber} onChange={(e) => setCrnNumber(e.target.value)} />
+                                <Input id='crnNumber' value={crnNumber} onChange={(e) => setCrnNumber(e.target.value)} />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor='accountPin'>Account Pin</Label>
-                                <Input id='accountPin' name='pin' value={transactionPIN} onChange={(e) => setTransactionPIN(e.target.value)} />
+                                <Input id='accountPin' className='password-mask' value={transactionPIN} onChange={(e) => setTransactionPIN(e.target.value)} />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor='preferredKitta'>Preferred Kitta</Label>
-                                <Input id='preferredKitta' name='kitta' type='number' value={preferredKitta} min={10} onChange={(e) => setPreferredKitta(Number(e.target.value))} />
+                                <Input id='preferredKitta' type='number' value={preferredKitta} min={10} onChange={(e) => setPreferredKitta(Number(e.target.value))} />
                             </div>
                         </>
                     ) : (
@@ -254,11 +254,11 @@ export default function AccountForm({
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor='username'>Username</Label>
-                                <Input id='username' name='username' value={username} onChange={(e) => setUsername(e.target.value)} />
+                                <Input id='username' value={username} onChange={(e) => setUsername(e.target.value)} />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor='password'>Password</Label>
-                                <Input id='password' name='password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                                <Input id='password' className='password-mask' value={password} onChange={(e) => setPassword(e.target.value)} />
                             </div>
                         </>
                     )}

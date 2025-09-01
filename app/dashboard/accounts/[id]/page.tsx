@@ -10,7 +10,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAccountApi } from "@/api/account";
 import { Account } from "@/types/account";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatBSDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
@@ -140,7 +140,7 @@ export default function AccountDetailPage() {
                         <Detail label="Account Number" value={account.AccountNumber} />
                         <Detail label="Customer ID" value={account.CustomerId} />
                         <Detail label="Account Branch ID" value={account.AccountBranchId} />
-                        <Detail label="DMAT Expiry Date" value={formatDate(account.DMATExpiryDate)} />
+                        <Detail label="DMAT Expiry Date" value={formatBSDate(account.DMATExpiryDate)} />
                         <Detail label="Expired Date" value={formatDate(account.ExpiredDate)} />
                         <Detail label="Password Expiry Date" value={formatDate(account.PasswordExpiryDate)} />
                         <Detail label="Created At" value={formatDate(account.CreatedAt)} />

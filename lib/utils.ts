@@ -16,3 +16,14 @@ export function formatDate(dateString?: string | null): string {
     day: 'numeric',
   });
 }
+
+export function formatBSDate(dateString?: string | null): string {
+  if (!dateString) return '-';
+  const nepaliMonths = [
+    "Baisakh", "Jestha", "Ashad", "Shrawan", "Bhadra", "Ashwin",
+    "Kartik", "Mangsir", "Poush", "Magh", "Falgun", "Chaitra"
+  ];
+  const [year, month, day] = dateString.split('-').map(Number);
+  if (!year || !month || !day) return '-';
+  return `${nepaliMonths[month - 1]} ${day}, ${year}`;
+}
