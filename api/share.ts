@@ -44,9 +44,17 @@ export const useShareApi = () => {
         [getAuthHeaders]
     );
 
+    const markAllRead = useCallback(async () => {
+        const response = await axiosClient.post(`/${API_VERSION}/shares/errors/mark-seen`, {}, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    }, [getAuthHeaders]);
+
     return {
         getShares,
         getShareErrors,
         getShareById,
+        markAllRead,
     };
 }

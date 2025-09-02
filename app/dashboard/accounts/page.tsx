@@ -6,6 +6,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { useAccountApi } from "@/api/account";
 import Loading from "@/components/ui/loading";
 import { Account } from "@/types/account";
+import { toast } from "sonner";
 
 interface AccountsResponse {
     status: string;
@@ -28,6 +29,7 @@ export default function AccountsPage() {
                 setAccounts(response.accounts);
             } catch (error) {
                 console.error("Failed to fetch Accounts:", error);
+                toast.error("Failed to load accounts data");
             } finally {
                 setLoading(false);
             }

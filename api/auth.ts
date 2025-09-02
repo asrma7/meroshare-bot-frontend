@@ -47,7 +47,15 @@ export const useUserApi = () => {
     throw new Error(response.data.message || "Failed to fetch profile");
   };
 
+  const getDashboard = useCallback(async () => {
+    const response = await axiosClient.get(`/${API_VERSION}/dashboard`, {
+      headers: getAuthHeaders(),
+    });
+    return response.data;
+  }, [getAuthHeaders]);
+
   return {
     getProfile,
+    getDashboard,
   };
 };

@@ -6,6 +6,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { useShareApi } from "@/api/share";
 import Loading from "@/components/ui/loading";
 import { ShareError } from "@/types/share";
+import { toast } from "sonner";
 
 interface SharesResponse {
     status: string;
@@ -28,6 +29,7 @@ export default function ShareErrorsPage() {
                 setErrors(response.applied_share_errors);
             } catch (error) {
                 console.error("Failed to fetch Shares:", error);
+                toast.error("Failed to load share errors data");
             } finally {
                 setLoading(false);
             }
