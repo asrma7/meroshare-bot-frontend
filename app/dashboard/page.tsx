@@ -2,20 +2,32 @@
 
 import { Users, AlertTriangle, Database } from "lucide-react";
 import { toast } from "sonner";
-import { useUserApi } from "@/api/auth";
+import { useUserApi } from "@/api/user";
 import { useShareApi } from "@/api/share";
 import { useEffect, useState } from "react";
 import { UserDashboard } from "@/types/user";
 import Loading from "@/components/ui/loading";
 import { MetricCard } from "@/components/dashboard/metric-card";
 import { FailedApplicationsTable } from "@/components/dashboard/failed-application-table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
   const [dashboardData, setDashboardData] = useState<UserDashboard | null>(null);
   const [loading, setLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
 
-  const { getDashboard } = useUserApi();
+  const { getDashboard, resetLogs } = useUserApi();
   const { markAllRead } = useShareApi();
 
   useEffect(() => {
@@ -53,6 +65,26 @@ export default function Dashboard() {
     }
   };
 
+  const handleResetLogs = async () => {
+    try {
+      await resetLogs();
+      toast.success("Logs have been reset");
+      setDashboardData((prev) =>
+        prev
+          ? {
+            ...prev,
+            total_shares: 0,
+            failed_shares: 0,
+            failed_applications: [],
+          }
+          : prev
+      );
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to reset logs");
+    }
+  };
+
   if (!isMounted) return null;
   if (loading) return <Loading />;
 
@@ -62,6 +94,31 @@ export default function Dashboard() {
       <p className="text-muted-foreground mb-8">
         Hi, {dashboardData?.user?.first_name} {dashboardData?.user?.last_name}
       </p>
+      <div className="flex justify-end mb-4">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive">Reset Logs</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Reset Logs?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will delete all applied shares and error logs. Your accounts will not be affected.
+                This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleResetLogs}
+                className="bg-red-600 hover:bg-red-700"
+              >
+                Reset Logs
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8 p-4 border rounded-md shadow">
         <MetricCard

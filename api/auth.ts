@@ -1,7 +1,4 @@
-import { useAuth } from "@/contexts/authContext";
 import axiosClient from "./axiosClient";
-import { useCallback } from "react";
-
 const API_VERSION = "api/v1";
 
 export const login = async (identifier: string, password: string) => {
@@ -27,35 +24,4 @@ export const register = async (
     password,
   });
   return response.data;
-};
-
-export const useUserApi = () => {
-  const { token } = useAuth();
-  const getAuthHeaders = useCallback(() => {
-    return {
-      Authorization: `Bearer ${token}`,
-    };
-  }, [token]);
-
-  const getProfile = async () => {
-    const response = await axiosClient.get(`/${API_VERSION}/profile`, {
-      headers: getAuthHeaders(),
-    });
-    if (response.data.status === "success") {
-      return response.data.profile;
-    }
-    throw new Error(response.data.message || "Failed to fetch profile");
-  };
-
-  const getDashboard = useCallback(async () => {
-    const response = await axiosClient.get(`/${API_VERSION}/dashboard`, {
-      headers: getAuthHeaders(),
-    });
-    return response.data;
-  }, [getAuthHeaders]);
-
-  return {
-    getProfile,
-    getDashboard,
-  };
 };

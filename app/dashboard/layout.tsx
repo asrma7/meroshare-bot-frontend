@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Separator } from "@radix-ui/react-separator";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { useUserApi } from "@/api/auth";
+import { useUserApi } from "@/api/user";
 
 const routeMap: Record<string, string> = {
     dashboard: "Dashboard",
